@@ -1,0 +1,64 @@
+#!/bin/bash
+
+# v1.0
+# This script changes value of "-f" argument of sendmail command when using nullmailer.
+# If abscent, "-f" argument with value will be added to command line parameters.
+# Script also changes "From" and "To" fields in email message (may be optional).
+# Tested with nullmailer v1.13-r5 on Gentoo Linux.
+
+stdin=$(</dev/stdin)
+optIndex="0"
+
+# New value for "-f" argument.
+newFrom="somebody"
+
+# Regexes for changing email "From" and "To" fields.
+newAddress="somebody@example.com"
+fromRE="From:(.*)<.*>"
+fromChangeRE="From:\1<$newAddress>"
+toRE="To:.*"
+toChangeRE="To: $newAddress"
+
+# Find (if present) "-f" argument and store it's value index.
+# First ":" turns off verbose error reporting.
+while getopts ":f:" flag; do
+    case $flag in
+        f) optIndex=$OPTIND
+           break
+           ;;
+    esac
+done
+
+# Get list of current argumetns.
+args=($@)
+
+# $OPTIND starts from 1 and points to next arg.
+# If "-f" is found, $optIndex will not be 0.
+if (($optIndex != 0)); then
+    # "-f" is found. Change its value.
+    # $@ starts from 0 so we need to subtract 2 from $optIndex.
+    args[(($optIndex-2))]=$newFrom
+
+    # Set new arguments.
+    set -- "${args[@]}"
+else
+    # "-f" is not found. Add "-f <fromName>" as first argument.
+    new_args=()
+    new_args[0]="-f"
+    new_args[1]=$newFrom
+
+    # Copy old argumetns to new array.
+    for ((i=0; i < ${#args[@]}; i++)) do
+        new_args[(($i+2))]=${args[$i]}
+    done
+
+    # Set new argumentss.
+    set -- "${new_args[@]}"
+fi
+
+# Change both "From" and "To" fields to $newAddress (some mail servers need this).
+# Comment "sed" commands if you don't need such behaviour.
+newMessage=$(echo "$stdin" | sed -E "0,/$fromRE/s//$fromChangeRE/" | sed -E "0,/$toRE/s//$toChangeRE/")
+
+# Call original sendmail with new parameters and message.
+echo "$newMessage" | /usr/sbin/sendmail-bin $@
