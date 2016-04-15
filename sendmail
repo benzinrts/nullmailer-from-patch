@@ -1,25 +1,27 @@
 #!/bin/bash
 
 # v1.0
-# This script changes value of "-f" argument of sendmail command when using nullmailer.
+# This script changes value of "-f" (<From>) argument of sendmail command when using nullmailer.
 # If abscent, "-f" argument with value will be added to command line parameters.
-# Script also changes "From" and "To" fields in email message (may be optional).
+# Script also changes "From" and "To" fields in email message (may be optional, see end of script).
 # Tested with nullmailer v1.13-r5 on Gentoo Linux.
 
 stdin=$(</dev/stdin)
 optIndex="0"
 
+# These vars are responsible for new <From> values.
 # New value for "-f" argument.
 newFrom="somebody"
+# New value for email "From" and "To" fields.
+newAddress="somebody@example.com"
 
 # Regexes for changing email "From" and "To" fields.
-newAddress="somebody@example.com"
 fromRE="From:(.*)<.*>"
 fromChangeRE="From:\1<$newAddress>"
 toRE="To:.*"
 toChangeRE="To: $newAddress"
 
-# Find (if present) "-f" argument and store it's value index.
+# Find (if present) "-f" argument and store its value index.
 # First ":" turns off verbose error reporting.
 while getopts ":f:" flag; do
     case $flag in
