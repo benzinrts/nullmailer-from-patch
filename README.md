@@ -9,6 +9,8 @@ Usage:
 - rename original "sendmail" (usually located in "/usr/sbin") to "sendmail-bin".
 - copy "sendmail" file from this repository to "/usr/sbin/sendmail".
 - make "/usr/sbin/sendmail" executable (chmod +x) and set proper rights if needed (chown).
+- set your own values to $newFrom and/or $newAddress.
+- modify line 63 in script if needed (it's pretty obvious).
 - feel free to modify script for your own needs.
 
 Original idea:
