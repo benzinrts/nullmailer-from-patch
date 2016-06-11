@@ -10,7 +10,7 @@ Usage:
 - copy "sendmail" file from this repository to "/usr/sbin/sendmail".
 - make "/usr/sbin/sendmail" executable (chmod +x) and set proper rights if needed (chown).
 - set your own values to $newFrom and/or $newAddress.
-- modify line 62 in script if needed (it's pretty obvious, see comments in sendmail file).
+- modify line 62 in script if needed (it's pretty obvious, see comments in "sendmail" file).
 - feel free to modify script for your own needs.
 
 Original idea:
