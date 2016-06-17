@@ -58,7 +58,7 @@ else
     set -- "${new_args[@]}"
 fi
 
-# Change both "From" and "To" fields to $newAddress (some mail servers need this).
+# Change both "From" and "To" fields to $newAddress in message body (some mail servers need this).
 # Comment "sed" commands if you don't need such behaviour.
 newMessage=$(echo "$stdin" | sed -E "0,/$fromRE/s//$fromChangeRE/" | sed -E "0,/$toRE/s//$toChangeRE/")
 
