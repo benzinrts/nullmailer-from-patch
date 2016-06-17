@@ -34,6 +34,7 @@ done
 # Get list of current argumetns.
 args=($@)
 
+# $OPTIND starts from 1 and points to next arg.
 # If "-f" is found, $optIndex will not be 0.
 if (($optIndex != 0)); then
     # "-f" is found. Change its value.
