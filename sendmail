@@ -54,7 +54,7 @@ else
         new_args[(($i+2))]=${args[$i]}
     done
 
-    # Set new argumentss.
+    # Set new arguments.
     set -- "${new_args[@]}"
 fi
 
