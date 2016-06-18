@@ -35,16 +35,16 @@ done
 args=($@)
 
 # $OPTIND starts from 1 and points to next arg.
+# $@ starts from 0 so we need to subtract 2 from $optIndex.
 # If "-f" is found, $optIndex will not be 0.
 if (($optIndex != 0)); then
     # "-f" is found. Change its value.
-    # $@ starts from 0 so we need to subtract 2 from $optIndex.
     args[(($optIndex-2))]=$newFrom
 
     # Set new arguments.
     set -- "${args[@]}"
 else
-    # "-f" is not found. Add "-f <fromName>" as first argument.
+    # "-f" is not found. Add "-f $newFrom" as first argument.
     new_args=()
     new_args[0]="-f"
     new_args[1]=$newFrom
